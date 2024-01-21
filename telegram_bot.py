@@ -42,7 +42,6 @@ def handle_new_question_request(update, context):
     question, answer = new_question()
 
     update.message.reply_text(question)
-    update.message.reply_text(answer)
 
     context.user_data['redis'].hset(update.message.chat.id, mapping={
         'answer': answer,
