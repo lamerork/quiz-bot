@@ -1,12 +1,19 @@
 from environs import Env
 import redis
+import logging
 
 import vk_api as vk
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.utils import get_random_id
 
+from telegram import Bot
+
 from common import new_question
+from telegram_log import TelegramLogsHandler
+
+
+logger = logging.getLogger('Logger')
 
 
 def handle_new_question_request(event, redis_db):
@@ -52,6 +59,12 @@ def main():
     env = Env()
     env.read_env()
 
+    logger_bot = Bot(token=env.str('TELEGRAM_LOG_TOKEN'))
+    chat_id = env.str('TELEGRAM_CHAT_ID')
+
+    logger.setLevel(logging.INFO)
+    logger.addHandler(TelegramLogsHandler(logger_bot, 'ВК Викторины', chat_id))
+
     vk_session = vk.VkApi(token=env.str('VK_TOKEN'))
     vk_api = vk_session.get_api()
 
@@ -62,6 +75,8 @@ def main():
     keyboard.add_button('Сдаться', color=VkKeyboardColor.NEGATIVE)
     keyboard.add_line()
     keyboard.add_button('Мой счет')
+
+    logger.info('Бот запущен')
 
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
