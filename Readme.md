@@ -16,7 +16,7 @@ pip install -r requirements.txt
 6. Создайте  группу для работы в VK и получите токен группы
 7. Запустите базу данных в redis
 ```sh
-docker run --name quiz-redis -d redis
+docker run --name quiz-redis --rm -it -p 6379:6379/tcp -d redis
 ```
 8. Создайте в корне проекта файл ``.env`` и укажите в нем все вышеуказанные данные, по образцу:
 
