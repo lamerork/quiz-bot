@@ -38,7 +38,7 @@ VK_TOKEN = Вконтакте токен
 
 [Telegram-бот](https://t.me/lamerorkSR_bot)
 
-[Vk-бот](https://vk.com/im?sel=-215364307)
+[Vk-бот](https://vk.com/im?sel=-223343820)
 
 ## Цель проекта
 
