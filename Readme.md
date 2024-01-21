@@ -3,15 +3,21 @@
 ## Как установить
 
 1. Скачайте код
-    ```git clone https://github.com/lamerork/quiz-bot.git```
+```sh
+git clone https://github.com/lamerork/quiz-bot.git
+```
 2. Для работы скрипта нужен Python версии не ниже 3.11
 3. Установите зависимости, указанные в файле ``requirements.txt`` командой:
 
-   ```pip install -r requirements.txt```
+```sh
+pip install -r requirements.txt
+```
 5. Создайте бота для работы в Telegram и получите его токен
 6. Создайте  группу для работы в VK и получите токен группы
 7. Запустите базу данных в redis
-    ```docker run --name quiz-redis -d redis```
+```sh
+docker run --name quiz-redis -d redis
+```
 8. Создайте в корне проекта файл ``.env`` и укажите в нем все вышеуказанные данные, по образцу:
 
 ```
@@ -24,11 +30,15 @@ VK_TOKEN = Вконтакте токен
 ## Как запустить
 - Telegram-бот запускается командой:
 
-```python3 telegram_bot.py```
+```sh
+python3 telegram_bot.py
+```
 
 - Vk-бот запускается командой:
 
-```python3 vk_bot.py```
+```sh
+python3 vk_bot.py
+```
 
 ## Результат работы
 
