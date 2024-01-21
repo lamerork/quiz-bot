@@ -2,6 +2,7 @@ from os import listdir, getcwd
 from os.path import join
 from random import choice
 import re
+from environs import Env
 
 from telegram import ReplyKeyboardMarkup
 
@@ -11,8 +12,12 @@ reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 
 def new_question():
-    path =join(getcwd(),'quiz-questions')
-    print(path)
+
+    env = Env()
+    env.read_env()
+
+    path = env.str('PATH_QUIZ')
+
     filename = choice(listdir(path))
 
     with open(join(path, filename), 'r', encoding='KOI8-R') as f:
