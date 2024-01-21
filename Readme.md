@@ -25,6 +25,7 @@ TELEGRAM_TOKEN = Телеграм токен
 TELEGRAM_CHAT_ID = Телеграм ID
 TELEGRAM_LOG_TOKEN = Телеграм токен для log бота
 VK_TOKEN = Вконтакте токен
+PATH_QUIZ = Путь к папке с вопросами
 ```
 
 ## Как запустить
