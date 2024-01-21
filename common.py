@@ -1,4 +1,4 @@
-from os import listdir
+from os import listdir, getcwd
 from os.path import join
 from random import choice
 import re
@@ -11,8 +11,8 @@ reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 
 def new_question():
-    path = 'quiz-questions'
-
+    path =join(getcwd(),'quiz-questions')
+    print(path)
     filename = choice(listdir(path))
 
     with open(join(path, filename), 'r', encoding='KOI8-R') as f:
@@ -29,7 +29,3 @@ def new_question():
     answer = re.sub(r'^\s+|\s+$', '', answer)
 
     return question, answer
-
-
-def check_answer(corre):
-    pass
