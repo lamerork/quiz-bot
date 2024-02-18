@@ -93,7 +93,12 @@ def main():
     dispatcher = updater.dispatcher
 
     dispatcher.bot_data['quizs'] = load_quizs(env.str('PATH_QUIZ'))
-    dispatcher.bot_data['redis'] = redis.Redis(host='localhost', port=6379, protocol=3, db=0, decode_responses=True)
+    dispatcher.bot_data['redis'] = redis.Redis(
+        host=env.str('REDIS_HOST', 'localhost'),
+        port=env.str('REDIS_PORT', 6379),
+        protocol=3,
+        db=env.str('REDIS_DB_NUMBER', 0),
+        decode_responses=True)
 
     logger.setLevel(logging.INFO)
     logger.addHandler(TelegramLogsHandler(logger_bot, 'ТГ Викторины', chat_id))

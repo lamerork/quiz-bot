@@ -68,7 +68,12 @@ def main():
     vk_session = vk.VkApi(token=env.str('VK_TOKEN'))
     vk_api = vk_session.get_api()
 
-    redis_db = redis.Redis(host='localhost', port=6379, protocol=3, db=0, decode_responses=True)
+    redis_db = redis.Redis(
+        host=env.str('REDIS_HOST', 'localhost'),
+        port=env.str('REDIS_PORT', 6379),
+        protocol=3,
+        db=env.str('REDIS_DB_NUMBER', 0),
+        decode_responses=True)
 
     keyboard = VkKeyboard(one_time=True)
     keyboard.add_button('Новый вопрос', color=VkKeyboardColor.POSITIVE)
