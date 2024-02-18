@@ -6,7 +6,7 @@ from telegram import Bot, ReplyKeyboardRemove, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
 from telegram_log import TelegramLogsHandler
-from quiz_question import new_question
+from quiz_question import question_new
 
 
 CHOOSING, ANSWERING = range(2)
@@ -43,7 +43,7 @@ def cancel(update, _):
 
 def handle_new_question_request(update, context):
 
-    question, answer = new_question()
+    question, answer = question_new()
 
     update.message.reply_text(question)
 

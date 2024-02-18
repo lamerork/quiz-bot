@@ -9,7 +9,7 @@ from vk_api.utils import get_random_id
 
 from telegram import Bot
 
-from common import new_question
+from quiz_question import question_new
 from telegram_log import TelegramLogsHandler
 
 
@@ -18,7 +18,7 @@ logger = logging.getLogger('Logger')
 
 def handle_new_question_request(event, redis_db):
 
-    question, answer = new_question()
+    question, answer = question_new()
 
     redis_db.hset(event.user_id, mapping={
         'answer': answer,

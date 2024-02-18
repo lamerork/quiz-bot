@@ -4,7 +4,7 @@ import re
 from environs import Env
 
 
-def new_question():
+def question_new():
 
     env = Env()
     env.read_env()
