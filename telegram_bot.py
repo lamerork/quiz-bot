@@ -6,7 +6,7 @@ from telegram import Bot, ReplyKeyboardRemove, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
 from telegram_log import TelegramLogsHandler
-from quiz_question import question_new
+from quiz import get_quiz, load_quizs
 
 
 CHOOSING, ANSWERING = range(2)
@@ -28,10 +28,6 @@ def start(update, context):
         reply_markup=reply_markup,
      )
 
-    r = redis.Redis(host='localhost', port=6379, protocol=3, db=0, decode_responses=True)
-
-    context.user_data['redis'] = r
-
     context.user_data['score'] = 0
     return CHOOSING
 
@@ -43,11 +39,11 @@ def cancel(update, _):
 
 def handle_new_question_request(update, context):
 
-    question, answer = question_new()
+    question, answer = get_quiz(context.bot_data['quizs'])
 
     update.message.reply_text(question)
 
-    context.user_data['redis'].hset(update.message.chat.id, mapping={
+    context.bot_data['redis'].hset(update.message.chat.id, mapping={
         'answer': answer,
         'question': question
     })
@@ -79,7 +75,7 @@ def handle_score_request(update, context):
 
 def handle_show_answer(update, context):
 
-    answer = context.user_data['redis'].hgetall(update.message.chat.id)['answer']
+    answer = context.bot_data['redis'].hgetall(update.message.chat.id)['answer']
     text = f'Правильны ответ:\n{answer}\n\nДля следующего вопроса нажми «Новый вопрос»'
     update.message.reply_text(text, reply_markup=reply_markup)
 
@@ -95,6 +91,9 @@ def main():
 
     updater = Updater(env.str('TELEGRAM_TOKEN'))
     dispatcher = updater.dispatcher
+
+    dispatcher.bot_data['quizs'] = load_quizs(env.str('PATH_QUIZ'))
+    dispatcher.bot_data['redis'] = redis.Redis(host='localhost', port=6379, protocol=3, db=0, decode_responses=True)
 
     logger.setLevel(logging.INFO)
     logger.addHandler(TelegramLogsHandler(logger_bot, 'ТГ Викторины', chat_id))

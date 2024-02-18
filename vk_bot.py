@@ -9,16 +9,16 @@ from vk_api.utils import get_random_id
 
 from telegram import Bot
 
-from quiz_question import question_new
+from quiz import get_quiz, load_quizs
 from telegram_log import TelegramLogsHandler
 
 
 logger = logging.getLogger('Logger')
 
 
-def handle_new_question_request(event, redis_db):
+def handle_new_question_request(event, redis_db, quizs):
 
-    question, answer = question_new()
+    question, answer = get_quiz(quizs)
 
     redis_db.hset(event.user_id, mapping={
         'answer': answer,
@@ -78,13 +78,15 @@ def main():
 
     logger.info('Бот запущен')
 
+    quizs = load_quizs(env.str('PATH_QUIZ'))
+
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         if not (event.type == VkEventType.MESSAGE_NEW and event.to_me):
             continue
 
         if event.text == 'Новый вопрос':
-            text = handle_new_question_request(event, redis_db)
+            text = handle_new_question_request(event, redis_db, quizs)
 
         elif event.text == 'Сдаться':
             text = handle_show_answer(event, redis_db)
