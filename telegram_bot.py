@@ -2,16 +2,20 @@ from environs import Env
 import logging
 
 import redis
-from telegram import Bot, ReplyKeyboardRemove
+from telegram import Bot, ReplyKeyboardRemove, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
 from telegram_log import TelegramLogsHandler
-from common import new_question, reply_markup
+from quiz_question import new_question
 
 
 CHOOSING, ANSWERING = range(2)
 
 logger = logging.getLogger('Logger')
+
+keyboard = [['Новый вопрос', 'Сдаться'], ['Мой счет']]
+
+reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 
 def start(update, context):

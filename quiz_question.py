@@ -1,14 +1,7 @@
-from os import listdir, getcwd
 from os.path import join
 from random import choice
 import re
 from environs import Env
-
-from telegram import ReplyKeyboardMarkup
-
-keyboard = [['Новый вопрос', 'Сдаться'], ['Мой счет']]
-
-reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 
 def new_question():
